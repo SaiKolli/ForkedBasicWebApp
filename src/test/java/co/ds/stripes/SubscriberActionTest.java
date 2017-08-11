@@ -14,6 +14,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -100,6 +101,17 @@ public class SubscriberActionTest extends AbstractBaseActionTest<SubscriberActio
 		assertEquals("Unexpected name value", subscriber.getName(), SUBSCRIBER_NAME);
 		assertEquals("Unexpected email value", subscriber.getEmail(), SUBSCRIBER_EMAIL);
 		assertEquals("Unexpected resolution", SUBSCRIBER_REDIRECT, trip.getRedirectUrl());
+	}
+
+	@Test
+	public void should_populate_topics_when_validationerror() throws Exception {
+		trip.setParameter("subscriber.id", SUBSCRIBER_ID.toString());
+		trip.setParameter("subscriber.name", "");
+		trip.setParameter("subscriber.email", SUBSCRIBER_EMAIL);
+		trip.execute("save");
+		verify(subscriberMapper, never()).update(subscriberArgumentCaptor.capture());
+		verify(subscriberMapper, never()).insert(subscriberArgumentCaptor.capture());
+		verify(subscriberTopicMapper).list(SUBSCRIBER_ID);
 	}
 	/* HELPERS */
 

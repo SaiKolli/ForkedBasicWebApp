@@ -30,6 +30,9 @@
 					<ul>
 						<li><stripes:link beanclass="co.ds.stripes.SubscriberAction">Subscribers</stripes:link></li>
 					</ul>
+					<ul>
+						<li><stripes:link beanclass="co.ds.stripes.TopicAction">Topics</stripes:link></li>
+					</ul>
 				</li>
 			</ul>
 		</div>

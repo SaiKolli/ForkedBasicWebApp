@@ -8,4 +8,8 @@ public interface TopicMapper {
 
 	List<Topic> list();
 
+	Topic fetch(Integer id);
+
+	void update(Topic subscriber);
+
 }

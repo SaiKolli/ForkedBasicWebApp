@@ -7,13 +7,12 @@ import co.ds.mybatis.mapper.SubscriberTopicMapper;
 import co.ds.mybatis.mapper.TopicMapper;
 import com.google.inject.Inject;
 import net.sourceforge.stripes.action.*;
-import net.sourceforge.stripes.validation.Validate;
-import net.sourceforge.stripes.validation.ValidateNestedProperties;
+import net.sourceforge.stripes.validation.*;
 
 import java.util.List;
 
 @UrlBinding("/subscriber")
-public class SubscriberAction extends BaseAction {
+public class SubscriberAction extends BaseAction implements ValidationErrorHandler{
 
 	private static final String LIST_FORWARD = "/WEB-INF/jsp/subscriber/list.jsp";
 	private static final String FORM_FORWARD = "/WEB-INF/jsp/subscriber/form.jsp";
@@ -78,6 +77,13 @@ public class SubscriberAction extends BaseAction {
 			}
 		}
 		return new RedirectResolution(SubscriberAction.class);
+	}
+
+	@Override
+	public Resolution handleValidationErrors(ValidationErrors errors) throws Exception {
+		final List<Integer> subscriberTopics = subscriberTopicMapper.list(subscriber.getId());
+		subscriber.setTopicIds(subscriberTopics);
+		return form();
 	}
 
 	/* READ-ONLY */
